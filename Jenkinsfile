@@ -1,14 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_VERSIONS = "Node 22.x"
-    }
-
-    tools {
-        nodejs "${NODE_VERSIONS}"
-    }
-
     stages {
         stage("Checkout") {
             steps {
@@ -24,12 +16,18 @@ pipeline {
             }
         }
 
-        stage("Start application and run tests") {
+        stage("Start application") {
             steps {
                 script {
-                    bat 'npm start &'
-                    bat 'wait-on http://localhost:8090'
-                    bat 'npm test'
+                    bat 'start /b npm start'
+                }
+            }
+        }
+
+        stage("Run tests") {
+            steps {
+                script {
+                    bat 'start npm test'
                 }
             }
         }
